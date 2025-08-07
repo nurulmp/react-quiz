@@ -56,7 +56,7 @@ function Quiz() {
   }
 
   function prevQuestion() {
-    if (currentQuestion >= 1 && currentQuestion <= questions.lenght) {
+    if (currentQuestion >= 1 && currentQuestion <=  questions.lenght) {
       setCurrentQuestion((prveCurrent) => prveCurrent + 1);
     }
   }
