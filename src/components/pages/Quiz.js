@@ -48,14 +48,32 @@ function Quiz() {
     });
   }
 
-  console.log(qna);
+  //next qustion
+  function nextQuestion() {
+    if (currentQuestion + 1 < questions.lenght) {
+      setCurrentQuestion((prveCurrent) => prveCurrent + 1);
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQuestion >= 1 && currentQuestion <= questions.lenght) {
+      setCurrentQuestion((prveCurrent) => prveCurrent + 1);
+    }
+  }
+
   return (
     <>
-      <h1>{qna[currentQuestion].title}</h1>
-      <h4>Question can have multiple answers</h4>
-      <Answers qna={qna} handleChange={handleAnasweChange} />
-      <ProgressBar />
-      <MiniPlayer />
+      {loading && <div>loading....</div>}
+      {error && <div>there was an error....</div>}
+      {!loading && !error && qna && qna.lenght > 0 && (
+        <>
+          <h1>{qna[currentQuestion].title}</h1>
+          <h4>Question can have multiple answers</h4>
+          <Answers qna={qna} handleChange={handleAnasweChange} />
+          <ProgressBar />
+          <MiniPlayer />
+        </>
+      )}
     </>
   );
 }

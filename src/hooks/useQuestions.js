@@ -1,13 +1,7 @@
-import {
-  get,
-  getDatabase,
-  limitToFirst,
-  orderByKey,
-  query,
-  ref,
-  startAt,
-} from "firebase/database";
+import { get, getDatabase, orderByKey, query, ref } from "firebase/database";
+
 import { useEffect, useState } from "react";
+
 function useQuestions(videoId) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(true);
@@ -17,12 +11,7 @@ function useQuestions(videoId) {
     async function fetchQuestions() {
       const db = getDatabase();
       const quizRef = ref(db, "quiz/" + videoId + "/questions");
-      const quizQuery = query(
-        quizRef,
-        orderByKey(),
-        startAt("" + page),
-        limitToFirst(8)
-      );
+      const quizQuery = query(quizRef, orderByKey());
 
       try {
         setError(false);
