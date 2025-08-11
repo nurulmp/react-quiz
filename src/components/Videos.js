@@ -18,7 +18,7 @@ function Videos() {
           loader="loading..."
           next={() => setPage(page + 8)}
         >
-          {videos.map((video) =>
+          {videos.map((video, index) =>
             video.noq > 0 ? (
               <Link to={`/quiz/${video.youtubeID}`} key={video.youtubeID}>
                 <Video
@@ -28,13 +28,18 @@ function Videos() {
                 />
               </Link>
             ) : (
-              <Video title={video.title} id={video.youtubeID} noq={video.noq} />
+              <Video
+                title={video.title}
+                id={video.youtubeID}
+                noq={video.noq}
+                key={video.youtubeID}
+              />
             )
           )}
         </InfiniteScroll>
       )}
       {!loading && videos.length === 0 && <div>no data found</div>}
-      {error && <div>there was an error</div>}
+      {error && <div>there was an error in videos</div>}
       {loading && <div>loading...</div>}
     </div>
   );

@@ -17,7 +17,7 @@ function useQuestions(videoId) {
         setError(false);
         setLoading(true);
         const snapshot = await get(quizQuery);
-        console.log(snapshot);
+        // console.log(snapshot);
         setLoading(false);
         if (snapshot.exists()) {
           setQuestion((prevQuestions) => {

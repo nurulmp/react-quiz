@@ -50,27 +50,39 @@ function Quiz() {
 
   //next qustion
   function nextQuestion() {
-    if (currentQuestion + 1 < questions.lenght) {
+    console.log("next");
+    if (currentQuestion + 1 < questions.length) {
       setCurrentQuestion((prveCurrent) => prveCurrent + 1);
     }
   }
 
   function prevQuestion() {
-    if (currentQuestion >= 1 && currentQuestion <=  questions.lenght) {
+    if (currentQuestion >= 1 && currentQuestion <= questions.length) {
       setCurrentQuestion((prveCurrent) => prveCurrent + 1);
     }
   }
 
+  //calculate persentage of progress
+  const percentage =
+    questions.length > 0 ? ((currentQuestion + 1) / questions.length) * 100 : 0;
+
   return (
     <>
-      {loading && <div>loading....</div>}
-      {error && <div>there was an error....</div>}
-      {!loading && !error && qna && qna.lenght > 0 && (
+      {loading && <div>Loading ...</div>}
+      {error && <div>There was an error!</div>}
+      {!loading && !error && qna && qna.length > 0 && (
         <>
           <h1>{qna[currentQuestion].title}</h1>
           <h4>Question can have multiple answers</h4>
-          <Answers qna={qna} handleChange={handleAnasweChange} />
-          <ProgressBar />
+          <Answers
+            option={qna[currentQuestion].option}
+            handleChange={handleAnasweChange}
+          />
+          <ProgressBar
+            next={nextQuestion}
+            prev={prevQuestion}
+            progress={percentage}
+          />
           <MiniPlayer />
         </>
       )}
