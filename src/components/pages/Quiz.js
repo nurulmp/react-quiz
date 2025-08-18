@@ -1,6 +1,8 @@
+import { getDatabase, ref, set } from "firebase/database";
 import _ from "lodash";
 import { useEffect, useReducer, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import useQuestions from "../../hooks/useQuestions";
 import Answers from "../Answers";
 import MiniPlayer from "../MiniPlayer";
@@ -18,7 +20,7 @@ const reducer = (state, action) => {
       return action.value;
     case "answer":
       const questions = _.cloneDeep(state);
-      questions[action.questionsID].options[action.optionIndex].checked =
+      questions[action.questionID].options[action.optionIndex].checked =
         action.value;
       return questions;
     default:
@@ -31,6 +33,8 @@ function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [qna, dispatch] = useReducer(reducer, initialState);
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch({
@@ -42,7 +46,7 @@ function Quiz() {
   function handleAnasweChange(e, index) {
     dispatch({
       type: "answer",
-      questionsID: currentQuestion,
+      questionID: currentQuestion,
       optionIndex: index,
       value: e.target.checked,
     });
@@ -50,7 +54,7 @@ function Quiz() {
 
   //next qustion
   function nextQuestion() {
-    console.log("next");
+    console.log(questions.length);
     if (currentQuestion + 1 < questions.length) {
       setCurrentQuestion((prveCurrent) => prveCurrent + 1);
     }
@@ -60,6 +64,22 @@ function Quiz() {
     if (currentQuestion >= 1 && currentQuestion <= questions.length) {
       setCurrentQuestion((prveCurrent) => prveCurrent + 1);
     }
+  }
+  //submit
+  async function submit() {
+    const { uid } = currentUser;
+    const db = getDatabase();
+    const resultRef = ref(db, `result/${uid}`);
+
+    await set(resultRef, {
+      [id]: qna,
+    });
+    navigate({
+      pathname: `/result/${id}`,
+      state: {
+        qna,
+      },
+    });
   }
 
   //calculate persentage of progress
@@ -75,13 +95,16 @@ function Quiz() {
           <h1>{qna[currentQuestion].title}</h1>
           <h4>Question can have multiple answers</h4>
           <Answers
-            option={qna[currentQuestion].option}
+            input
+            options={qna[currentQuestion].options}
             handleChange={handleAnasweChange}
+            submit={submit}
           />
           <ProgressBar
             next={nextQuestion}
             prev={prevQuestion}
             progress={percentage}
+            submit={submit}
           />
           <MiniPlayer />
         </>

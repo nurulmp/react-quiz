@@ -28,7 +28,7 @@ function useVideoList(page) {
         setError(false);
         setLoading(true);
         const snapshot = await get(videoQuery);
-        console.log(snapshot);
+
         setLoading(false);
         if (snapshot.exists()) {
           setVideos((prevVideos) => {

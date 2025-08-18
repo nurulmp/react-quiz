@@ -26,6 +26,7 @@ function Videos() {
                   id={video.youtubeID}
                   noq={video.noq}
                 />
+                {console.log(video.qna)}
               </Link>
             ) : (
               <Video
