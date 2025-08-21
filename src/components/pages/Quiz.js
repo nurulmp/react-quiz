@@ -62,7 +62,7 @@ function Quiz() {
 
   function prevQuestion() {
     if (currentQuestion >= 1 && currentQuestion <= questions.length) {
-      setCurrentQuestion((prveCurrent) => prveCurrent + 1);
+      setCurrentQuestion((prveCurrent) => prveCurrent - 1);
     }
   }
   //submit
